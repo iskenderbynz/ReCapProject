@@ -1,84 +1,45 @@
 ﻿using Business.Concrete;
-using Core.DataAccess.EntityFramework;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
-using System.Linq;
 
 namespace ConsoleUI
 {
+    //SOLID
+    //Open Closed Principle
     class Program
     {
         static void Main(string[] args)
-        {
-            //GetByDailyPriceTest();
+        {   
+            //Data Transformation Object
+            CarTest();
+            //IoC
+            //CategoryTest();
 
-
-
-            //AddTest();
-
-
-            UpdateTest();
-            GetCarDetailsTest();
-
-
-
+           
         }
 
-        private static void AddTest()
-        {
-            Car car = new Car
-            {
-                CarName = "190 D",
-                ColorId = 2,
-                BrandId = 1,
-                ModelYear = 1987,
-                DailyPrice = 110,
-                Description = "Mercedes w201 modeli 190 D"
-            };
-
-            CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Add(car);
-        }
-
-        private static void UpdateTest()
-        {
-            Car car = new Car
-            {
-                CarName = "190 D",
-                ColorId = 2,
-                BrandId = 1,
-                ModelYear = 1987,
-                DailyPrice = 110,
-                Description = "Mercedes w201 modeli 190 D"
-            };
-
-            CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Update(car);
-        }
-
-
-
-        private static void GetCarDetailsTest()
+      
+        private static void CarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarDetails())
+
+            var result = carManager.GetCarDetails();
+
+            if (result.Success == true)
             {
-                Console.WriteLine(car.CarName);
-                Console.WriteLine(car.BrandName);
-                Console.WriteLine(car.ColorName);
-                Console.WriteLine(car.DailyPrice);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.CarName);
+                }
             }
-        }
-
-        private static void GetByDailyPriceTest()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetByDailyPrice(50, 150))
+            else
             {
-                Console.WriteLine(car.CarName);
+                Console.WriteLine(result.Message);
             }
+
+
         }
     }
 }

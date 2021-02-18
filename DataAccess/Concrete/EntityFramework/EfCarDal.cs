@@ -11,11 +11,12 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, NorthwindContext>, ICarDal
+    //NuGet
+    public class EfCarDal : EfEntityRepositoryBase<Car, ReCapProjectContext>, ICarDal
     {
         public List<CarDetailDto> GetCarDetails()
         {
-            using (NorthwindContext context = new NorthwindContext())
+            using (ReCapProjectContext context = new ReCapProjectContext())
             {
                 var result = from c in context.Car
                              join b in context.Brand
@@ -24,12 +25,15 @@ namespace DataAccess.Concrete.EntityFramework
                              on c.ColorId equals co.Id
                              select new CarDetailDto
                              {
-                                CarName =c.CarName, BrandName=b.BrandName,ColorName=co.ColorName,DailyPrice=c.DailyPrice
+                                 CarName = c.CarName,
+                                 BrandName = b.BrandName,
+                                 ColorName = co.ColorName,
+                                 DailyPrice = c.DailyPrice
                              };
                 return result.ToList();
             }
         }
 
-        
+
     }
 }
